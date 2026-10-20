@@ -30,9 +30,14 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      # সাইনিং কি (keystore) তৈরি করা হচ্ছে
+      - name: Generate Keystore
+        run: |
+          keytool -genkey -v -keystore android/app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+
       - name: Build release APK
         run: flutter build apk --release
-        continue-on-error: true # APK না পেলেও যেন পরের স্টেপ চলে
+        continue-on-error: true
 
       - name: Search and Copy APK
         if: always()
@@ -40,14 +45,14 @@ jobs:
           mkdir -p final_apk
           echo "Searching for APK files..."
           find . -name "*.apk" -type f
-          # APK ফাইলগুলো খুঁজে final_apk ফোল্ডারে কপি করা
-          find . -name "*.apk" -type f -exec cp {} final_apk/ \;
+          # শুধু signed apk কপি করব
+          find . -name "app-release.apk" -type f -exec cp {} final_apk/ \;
           echo "=== Files in final_apk ==="
           ls -la final_apk/
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: normal-pay-sms-reader-apk
-          path: final_apk/*.apk
+          name: normal-pay-sms-reader-apk-signed
+          path: final_apk/app-release.apk
           if-no-files-found: error
