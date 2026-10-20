@@ -1,0 +1,1 @@
+Build status: source project created and aligned to the API contracts found in the uploaded Normal Pay main-site ZIP. It has NOT been compiled or device-tested in this environment because Flutter SDK, Android SDK and JDK are unavailable here. Build on a computer using README.md / build_apk.sh. Test with real authorized sample SMS before production use.
