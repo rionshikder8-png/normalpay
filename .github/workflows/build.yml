@@ -33,8 +33,7 @@ jobs:
       - name: Build release APK via Gradle directly
         run: |
           cd android
-          chmod +x gradlew
-          ./gradlew assembleRelease
+          bash ./gradlew assembleRelease
 
       # APK টা যেখানেই থাকুক, খুঁজে একটা ফোল্ডারে জড়ো করবে
       - name: Collect APK
