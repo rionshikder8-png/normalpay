@@ -26,9 +26,11 @@ android {
         versionName = "1.0.0"
     }
 
-    // এই ব্লকটাই নতুন যোগ করা হলো R8 এরর ফিক্সের জন্য
+    // R8 এরর পুরোপুরি বন্ধ করার জন্য
     buildTypes {
         release {
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
