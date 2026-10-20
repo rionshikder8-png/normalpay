@@ -33,10 +33,17 @@ jobs:
       - name: Check Dart code
         run: flutter analyze
 
+      # ১. সাইনিং কি (keystore) তৈরি করা হচ্ছে
+      - name: Generate Keystore
+        run: |
+          keytool -genkey -v -keystore android/app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+
+      # ২. APK বিল্ড করা হচ্ছে
       - name: Build release APK
         run: flutter build apk --release
         continue-on-error: true
 
+      # ৩. APK খুঁজে বের করা
       - name: Search and Copy APK
         if: always()
         run: |
@@ -47,6 +54,7 @@ jobs:
           echo "=== Files in final_apk ==="
           ls -la final_apk/
 
+      # ৪. APK আপলোড করা
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
