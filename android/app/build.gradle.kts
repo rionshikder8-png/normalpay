@@ -25,6 +25,13 @@ android {
         versionCode = 1
         versionName = "1.0.0"
     }
+
+    // এই ব্লকটাই নতুন যোগ করা হলো R8 এরর ফিক্সের জন্য
+    buildTypes {
+        release {
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
 }
 
 flutter { source = "../.." }
