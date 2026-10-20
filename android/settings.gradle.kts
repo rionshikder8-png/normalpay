@@ -4,14 +4,27 @@ pluginManagement {
     val flutterSdkPath = run {
         val properties = Properties()
         val localProperties = file("local.properties")
-        require(localProperties.exists()) { "Flutter SDK not found. Run `flutter pub get` or `flutter create` first so android/local.properties is generated." }
-        localProperties.inputStream().use { properties.load(it) }
+
+        if (localProperties.exists()) {
+            localProperties.inputStream().use { properties.load(it) }
+        }
+
         val path = properties.getProperty("flutter.sdk")
-        require(!path.isNullOrBlank()) { "flutter.sdk is missing from android/local.properties" }
+            ?: System.getenv("FLUTTER_ROOT")
+
+        require(!path.isNullOrBlank()) {
+            "Flutter SDK not found. Check local.properties or FLUTTER_ROOT."
+        }
+
         path
     }
+
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
-    repositories { google(); mavenCentral(); gradlePluginPortal() }
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
 
 plugins {
