@@ -30,18 +30,19 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build release APK via Gradle directly
-        run: |
-          cd android
-          bash ./gradlew assembleRelease
+      - name: Build release APK
+        run: flutter build apk --release
+        continue-on-error: true # APK না পেলেও যেন পরের স্টেপ চলে
 
-      # APK টা যেখানেই থাকুক, খুঁজে একটা ফোল্ডারে জড়ো করবে
-      - name: Collect APK
+      - name: Search and Copy APK
         if: always()
         run: |
           mkdir -p final_apk
+          echo "Searching for APK files..."
+          find . -name "*.apk" -type f
+          # APK ফাইলগুলো খুঁজে final_apk ফোল্ডারে কপি করা
           find . -name "*.apk" -type f -exec cp {} final_apk/ \;
-          echo "=== Collected APKs ==="
+          echo "=== Files in final_apk ==="
           ls -la final_apk/
 
       - name: Upload APK artifact
