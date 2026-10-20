@@ -33,14 +33,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    
-    // Flutter যাতে APK ঠিকমতো খুঁজে পায়
-    applicationVariants.all {
-        outputs.all {
-            this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            outputFileName = "app-release.apk"
-        }
-    }
 }
 
 flutter { source = "../.." }
