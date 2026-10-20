@@ -71,7 +71,7 @@ class _ReaderHomeState extends State<ReaderHome> {
   String _message = 'Connect this phone to a device created in your Normal Pay dashboard.';
   String _server = 'https://abctour.live';
 
-  // SMS Reader ভেরিয়েবল
+  // SMS Reader Variables
   final _smsQuery = SmsQuery();
   Timer? _smsTimer;
   String _lastSmsId = "";
@@ -133,7 +133,6 @@ class _ReaderHomeState extends State<ReaderHome> {
           if (msgId != _lastSmsId) {
             _lastSmsId = msgId;
             final body = latestMsg.body ?? "";
-            final sender = latestMsg.address ?? "";
 
             // চেক করা এটা bKash না Nagad
             var provider = "";
