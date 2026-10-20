@@ -2,9 +2,6 @@ name: Build Normal Pay SMS Reader APK
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 permissions:
   contents: read
@@ -39,12 +36,12 @@ jobs:
       - name: Build release APK
         run: flutter build apk --release
 
-      # APK টা সব সম্ভাব্য জায়গা থেকে খুঁজে একটা ফোল্ডারে জড়ো করছি
       - name: Collect APK
         if: always()
         run: |
           mkdir -p final_apk
           find . -name "*.apk" -type f -exec cp {} final_apk/ \;
+          echo "=== Collected APKs ==="
           ls -la final_apk/
 
       - name: Upload APK artifact
