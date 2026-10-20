@@ -28,8 +28,13 @@ plugins {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories { google(); mavenCentral() }
+    // এখানে FAIL_ON_PROJECT_REPOS এর বদলে PREFER_SETTINGS করা হলো
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
+
 rootProject.name = "normal_pay_sms_reader"
 include(":app")
