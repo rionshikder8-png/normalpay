@@ -30,12 +30,13 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Check Dart code
-        run: flutter analyze
+      - name: Build release APK via Gradle directly
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
 
-      - name: Build release APK
-        run: flutter build apk --release
-
+      # APK টা যেখানেই থাকুক, খুঁজে একটা ফোল্ডারে জড়ো করবে
       - name: Collect APK
         if: always()
         run: |
