@@ -26,12 +26,19 @@ android {
         versionName = "1.0.0"
     }
 
-    // R8 এরর পুরোপুরি বন্ধ করার জন্য
     buildTypes {
         release {
             isMinifyEnabled = false
             isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+    
+    // Flutter যাতে APK ঠিকমতো খুঁজে পায়
+    applicationVariants.all {
+        outputs.all {
+            this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            outputFileName = "app-release.apk"
         }
     }
 }
