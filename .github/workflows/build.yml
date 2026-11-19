@@ -83,7 +83,13 @@ jobs:
           fi
 
       - name: Build release APK
-        run: flutter build apk --release
+        run: |
+          # Flutter's post-build APK lookup does not match this project's Gradle output dir
+          # (android/app/build/outputs). Gradle itself must still succeed; verify via the file.
+          flutter build apk --release 2>&1 | tee build.log || true
+          if grep -q "BUILD FAILED\|FAILURE: Build failed\|e: file://" build.log; then
+            echo "::error::Gradle compilation failed"; exit 1
+          fi
 
       - name: Collect APK
         run: |
