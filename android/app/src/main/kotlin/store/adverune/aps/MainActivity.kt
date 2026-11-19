@@ -1,4 +1,4 @@
-package com.normalpay.smsreader
+package store.adverune.aps
 
 import android.os.Bundle
 import androidx.work.Constraints
@@ -17,12 +17,12 @@ class MainActivity : FlutterActivity() {
         super.onCreate(savedInstanceState)
         val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
         val periodic = PeriodicWorkRequestBuilder<SmsSyncWorker>(15, TimeUnit.MINUTES).setConstraints(constraints).build()
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("normalpay-periodic-sms-sync", ExistingPeriodicWorkPolicy.UPDATE, periodic)
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("aps-periodic-sms-sync", ExistingPeriodicWorkPolicy.UPDATE, periodic)
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "com.normalpay.smsreader/device").setMethodCallHandler { call, result ->
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "store.adverune.aps/device").setMethodCallHandler { call, result ->
             try {
                 when (call.method) {
                     "saveConfig" -> {

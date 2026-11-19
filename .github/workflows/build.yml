@@ -1,63 +1,97 @@
-name: Build Normal Pay SMS Reader APK
+name: Build APS Reader APK
 
 on:
+  push:
+    branches: [main, "feature/**"]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: aps-reader-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 40
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: "3.24.5"
           cache: true
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Generate missing platform scaffolding (wrapper, no overwrite of app files)
+        run: |
+          if [ ! -f android/gradle/wrapper/gradle-wrapper.jar ]; then
+            flutter create --platforms=android --org store.adverune --project-name aps_reader /tmp/aps_seed
+            mkdir -p android/gradle/wrapper
+            cp /tmp/aps_seed/android/gradlew android/gradlew
+            cp /tmp/aps_seed/android/gradlew.bat android/gradlew.bat
+            cp /tmp/aps_seed/android/gradle/wrapper/gradle-wrapper.jar android/gradle/wrapper/gradle-wrapper.jar
+            chmod +x android/gradlew
+          fi
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Check Dart code
+      - name: Analyze
         run: flutter analyze
 
-      # ১. সাইনিং কি (keystore) তৈরি করা হচ্ছে
-      - name: Generate Keystore
+      - name: Unit and widget tests
         run: |
-          keytool -genkey -v -keystore android/app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          if [ -d test ]; then flutter test; else echo "No tests yet"; fi
 
-      # ২. APK বিল্ড করা হচ্ছে
+      - name: Prepare signing key (CI debug-grade key unless secrets provided)
+        env:
+          KEYSTORE_B64: ${{ secrets.APS_KEYSTORE_BASE64 }}
+          KEYSTORE_PASS: ${{ secrets.APS_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.APS_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.APS_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > android/app/release.keystore
+            {
+              echo "storeFile=release.keystore"
+              echo "storePassword=$KEYSTORE_PASS"
+              echo "keyAlias=$KEY_ALIAS"
+              echo "keyPassword=$KEY_PASS"
+            } > android/key.properties
+            echo "Using production signing key from secrets"
+          else
+            keytool -genkey -keystore android/app/ci.keystore -storepass aps-ci-build -alias apsci -keypass aps-ci-build -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=APS Reader CI,O=Adverune,C=BD"
+            {
+              echo "storeFile=ci.keystore"
+              echo "storePassword=aps-ci-build"
+              echo "keyAlias=apsci"
+              echo "keyPassword=aps-ci-build"
+            } > android/key.properties
+            echo "::warning::No production keystore secrets set. Using a temporary CI key. This APK cannot update a build signed with another key."
+          fi
+
       - name: Build release APK
         run: flutter build apk --release
-        continue-on-error: true
 
-      # ৩. APK খুঁজে বের করা
-      - name: Search and Copy APK
-        if: always()
+      - name: Collect APK
         run: |
           mkdir -p final_apk
-          echo "Searching for APK files..."
-          find . -name "*.apk" -type f
-          find . -name "*.apk" -type f -exec cp {} final_apk/ \;
-          echo "=== Files in final_apk ==="
-          ls -la final_apk/
+          cp build/app/outputs/flutter-apk/app-release.apk final_apk/APS-Reader-release.apk
+          ls -la final_apk
 
-      # ৪. APK আপলোড করা
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: normal-pay-sms-reader-apk
-          path: final_apk/*.apk
+          name: aps-reader-apk
+          path: final_apk/APS-Reader-release.apk
           if-no-files-found: error

@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(const NormalPayReaderApp());
 
-const _channel = MethodChannel('com.normalpay.smsreader/device');
+const _channel = MethodChannel('store.adverune.aps/device');
 const _blue = Color(0xFF365FE8);
 const _ink = Color(0xFF111827);
 const _muted = Color(0xFF667085);

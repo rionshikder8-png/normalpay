@@ -36,5 +36,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "normal_pay_sms_reader"
+rootProject.name = "aps_reader"
 include(":app")

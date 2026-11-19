@@ -1,4 +1,4 @@
-package com.normalpay.smsreader
+package store.adverune.aps
 
 import android.content.Context
 import androidx.work.Worker

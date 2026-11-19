@@ -1,4 +1,4 @@
-package com.normalpay.smsreader
+package store.adverune.aps
 
 import android.content.Context
 import android.util.Base64
@@ -8,7 +8,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 object SecureStore {
-    private const val PREFS = "normalpay_secure_device_v1"
+    private const val PREFS = "aps_secure_device_v1"
     private fun prefs(context: Context) = EncryptedSharedPreferences.create(
         context,
         PREFS,

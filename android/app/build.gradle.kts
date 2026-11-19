@@ -1,11 +1,18 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val keyProps = Properties().apply {
+    val f = rootProject.file("key.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
 android {
-    namespace = "com.normalpay.smsreader"
+    namespace = "store.adverune.aps"
     compileSdk = 35
     ndkVersion = "27.0.12077973"
     
@@ -19,20 +26,21 @@ android {
     }
     
     defaultConfig {
-        applicationId = "com.normalpay.smsreader"
+        applicationId = "store.adverune.aps"
         minSdk = 23
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "2.0.0"
     }
 
-    // সাইনিং কনফিগ (আমাদের ওয়ার্কফ্লোতে debug.keystore বানানো হবে)
     signingConfigs {
         create("release") {
-            storeFile = file("debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
+            if (keyProps.getProperty("storeFile") != null) {
+                storeFile = file(keyProps.getProperty("storeFile"))
+                storePassword = keyProps.getProperty("storePassword")
+                keyAlias = keyProps.getProperty("keyAlias")
+                keyPassword = keyProps.getProperty("keyPassword")
+            }
         }
     }
 
