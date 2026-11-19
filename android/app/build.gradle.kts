@@ -38,6 +38,7 @@ android {
         create("release") {
             if (keyProps.getProperty("storeFile") != null) {
                 storeFile = file(keyProps.getProperty("storeFile"))
+                storeType = keyProps.getProperty("storeType") ?: "JKS"
                 storePassword = keyProps.getProperty("storePassword")
                 keyAlias = keyProps.getProperty("keyAlias")
                 keyPassword = keyProps.getProperty("keyPassword")

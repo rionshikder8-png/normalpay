@@ -63,9 +63,10 @@ jobs:
           KEY_PASS: ${{ secrets.APS_KEY_PASSWORD }}
         run: |
           if [ -n "$KEYSTORE_B64" ]; then
-            echo "$KEYSTORE_B64" | base64 -d > android/app/release.keystore
+            echo "$KEYSTORE_B64" | base64 -d > android/app/release.p12
             {
-              echo "storeFile=release.keystore"
+              echo "storeFile=release.p12"
+              echo "storeType=PKCS12"
               echo "storePassword=$KEYSTORE_PASS"
               echo "keyAlias=$KEY_ALIAS"
               echo "keyPassword=$KEY_PASS"
