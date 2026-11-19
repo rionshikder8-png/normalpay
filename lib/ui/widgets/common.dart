@@ -47,8 +47,7 @@ class StatusPill extends StatelessWidget {
       );
 }
 
-/// Brand logo for a gateway inside a 40px white circle. Upay has no supplied logo asset yet,
-/// so it uses a neutral brand-coloured monogram (clearly not a redrawn logo).
+/// Brand logo for a gateway inside a white circle, using the supplied official logo assets.
 class GatewayLogo extends StatelessWidget {
   const GatewayLogo(this.id, {super.key, this.size = 40});
   final GatewayId? id;
@@ -64,7 +63,7 @@ class GatewayLogo extends StatelessWidget {
       case GatewayId.rocket:
         inner = Image.asset('assets/images/rocket_full.png', fit: BoxFit.contain);
       case GatewayId.upay:
-        inner = const Center(child: Text('U', style: TextStyle(color: Color(0xFFF9A825), fontWeight: FontWeight.w900, fontSize: 20)));
+        inner = Image.asset('assets/images/upay.png', fit: BoxFit.contain);
       case null:
         inner = const Icon(Icons.payments_rounded, color: ApsColors.muted, size: 20);
     }
