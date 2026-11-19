@@ -88,7 +88,10 @@ jobs:
       - name: Collect APK
         run: |
           mkdir -p final_apk
-          cp build/app/outputs/flutter-apk/app-release.apk final_apk/APS-Reader-release.apk
+          echo "APK candidates:"; find . -name "*.apk" -type f -not -path "./final_apk/*"
+          APK=$(find . -name "app-release.apk" -type f -not -path "./final_apk/*" | head -1)
+          test -n "$APK" || { echo "::error::No release APK produced"; exit 1; }
+          cp "$APK" final_apk/APS-Reader-release.apk
           ls -la final_apk
 
       - uses: actions/upload-artifact@v4
