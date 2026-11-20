@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "673571109842",
+    "project_id": "aps-gateway-e7d66",
+    "storage_bucket": "aps-gateway-e7d66.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673571109842:android:0a1428e2dfeabcaa7b660b",
+        "android_client_info": {
+          "package_name": "store.adverune.aps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcifekAVmDxspzqdir-SHfE7GanMk69lk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
