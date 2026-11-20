@@ -10,7 +10,7 @@ import org.json.JSONObject
 object SecureStore {
     private const val PREFS = "aps_secure_device_v1"
     private const val MAX_QUEUE = 500
-    val PROVIDERS = listOf("bkash", "nagad", "rocket", "upay")
+    val PROVIDERS = listOf("bkash", "nagad")
 
     private fun prefs(context: Context) = EncryptedSharedPreferences.create(
         context,

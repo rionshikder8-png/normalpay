@@ -14,12 +14,10 @@ class GatewayDetailScreen extends StatelessWidget {
 
   final GatewayId id;
 
-  /// Known sender short codes used to recognise payment SMS for each gateway.
+  /// The only sender ID accepted for each gateway (exact match). Everything else is ignored.
   static const Map<GatewayId, String> senderIds = {
-    GatewayId.bkash: '16247',
-    GatewayId.nagad: '16167',
-    GatewayId.upay: '16268',
-    GatewayId.rocket: '16216',
+    GatewayId.bkash: 'bKash',
+    GatewayId.nagad: 'NAGAD',
   };
 
   @override
@@ -97,7 +95,7 @@ class GatewayDetailScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      const Text('Known sender IDs', style: ApsText.label),
+                      const Text('Official sender ID (exact match only)', style: ApsText.label),
                       const SizedBox(height: 6),
                       Align(
                         alignment: Alignment.centerLeft,

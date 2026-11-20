@@ -46,7 +46,7 @@ class SettingsScreen extends StatelessWidget {
   // ------------------------------------------------------------------- content
   static List<InfoSection> get _privacySections => const [
         InfoSection('What APS Reader reads', [
-          'APS Reader reads only new incoming SMS messages from supported payment wallets (bKash, Nagad, Rocket and Upay) after you grant the SMS permission.',
+          'APS Reader reads only new incoming SMS messages sent by the official bKash and NAGAD sender IDs after you grant the SMS permission. Messages from any other sender, including look-alike names or phone numbers, are ignored.',
           'Existing messages already in your inbox are not uploaded. The app looks for new payment messages only.',
         ]),
         InfoSection('What is never uploaded', [

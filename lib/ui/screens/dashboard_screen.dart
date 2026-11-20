@@ -220,7 +220,7 @@ class _GatewayStatsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ids = GatewayId.values;
+    final ids = supportedGateways;
     return ApsCard(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
       child: Column(

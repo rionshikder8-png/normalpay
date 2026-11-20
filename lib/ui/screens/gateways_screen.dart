@@ -32,7 +32,7 @@ class GatewaysScreen extends StatelessWidget {
               const SizedBox(height: 2),
               const Text('SMS-based payment detection', style: ApsText.caption),
               const SizedBox(height: 14),
-              for (final id in GatewayId.values)
+              for (final id in supportedGateways)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: _GatewayCard(

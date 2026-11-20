@@ -3,6 +3,12 @@ import 'package:aps_reader/data/api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('gateway scope', () {
+    test('only official bKash and Nagad are monitored', () {
+      expect(supportedGateways, [GatewayId.bkash, GatewayId.nagad]);
+    });
+  });
+
   group('request signing', () {
     test('sha256Hex matches known vector', () {
       expect(ApsApi.sha256Hex(''), 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');

@@ -55,6 +55,12 @@ jobs:
         run: |
           if [ -d test ]; then flutter test; else echo "No tests yet"; fi
 
+      - name: Native Kotlin unit tests (SMS parser)
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew :app:testDebugUnitTest --tests "store.adverune.aps.SmsParserTest" --no-daemon
+
       - name: Prepare signing key (CI debug-grade key unless secrets provided)
         env:
           KEYSTORE_B64: ${{ secrets.APS_KEYSTORE_BASE64 }}

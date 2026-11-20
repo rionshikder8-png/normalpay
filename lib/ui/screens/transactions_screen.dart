@@ -303,7 +303,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                         color: ApsColors.border,
                         margin: const EdgeInsets.only(right: 8),
                       ),
-                      for (final g in GatewayId.values)
+                      for (final g in supportedGateways)
                         _Chip(
                           g.label,
                           selected: _gateways.contains(g),
@@ -607,7 +607,7 @@ class _ReferenceGeneratorSectionState extends State<ReferenceGeneratorSection> {
                   const SizedBox(width: 10),
                   const Expanded(
                     child: Text(
-                      'An APS Reference ID is an internal reference. It is NOT a bKash, Nagad, Rocket or Upay transaction ID and never marks a payment as completed.',
+                      'An APS Reference ID is an internal reference. It is NOT a bKash or Nagad transaction ID and never marks a payment as completed.',
                       style: ApsText.label,
                     ),
                   ),

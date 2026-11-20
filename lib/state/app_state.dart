@@ -51,7 +51,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   DateTime? lastPingOk;
 
   // data
-  Map<GatewayId, bool> gatewayEnabled = {for (final g in GatewayId.values) g: true};
+  Map<GatewayId, bool> gatewayEnabled = {for (final g in supportedGateways) g: true};
   Map<GatewayId, GatewayStats> gateways = {};
   ApiState statsState = ApiState.notAvailable;
   Map<String, dynamic>? overview; // total_payments, today_payments, total_amount, pending
@@ -112,7 +112,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   Future<void> onSignedIn({bool initial = false}) async {
     config = await bridge.loadConfig();
     gatewayEnabled = {for (final e in (await bridge.gatewayEnabled()).entries) if (GatewayIdX.parse(e.key) != null) GatewayIdX.parse(e.key)!: e.value};
-    for (final g in GatewayId.values) {
+    for (final g in supportedGateways) {
       gatewayEnabled.putIfAbsent(g, () => true);
     }
     await refreshAll(silent: initial);
@@ -251,7 +251,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
       }
     }
     final next = <GatewayId, GatewayStats>{};
-    for (final g in GatewayId.values) {
+    for (final g in supportedGateways) {
       final s = srv[g.key] as Map?;
       final lastSmsMs = health.lastSmsByProvider[g.key] ?? 0;
       next[g] = GatewayStats(

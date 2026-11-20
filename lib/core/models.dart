@@ -1,5 +1,9 @@
 enum GatewayId { bkash, nagad, rocket, upay }
 
+/// Gateways the Reader actually monitors. Owner decision: only official bKash and Nagad SMS are read.
+/// Rocket and Upay stay in the enum only so server data for them still parses; add them here to enable.
+const List<GatewayId> supportedGateways = [GatewayId.bkash, GatewayId.nagad];
+
 extension GatewayIdX on GatewayId {
   String get key => name;
   String get label => switch (this) {
