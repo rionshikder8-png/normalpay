@@ -59,7 +59,7 @@ class NotificationsScreen extends StatelessWidget {
     final tx = appState.findTx(n.txRef ?? n.trxId);
     if (tx != null) {
       Navigator.of(context).push(
-        MaterialPageRoute<void>(builder: (_) => TransactionDetailScreen(tx)),
+        MaterialPageRoute<void>(builder: (_) => TransactionDetailScreen(tx: tx)),
       );
     } else {
       shellTab.value = 1;

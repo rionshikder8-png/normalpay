@@ -97,9 +97,9 @@ class _GatewayCard extends StatelessWidget {
           const Divider(height: 1),
           _Row(
             label: 'SMS Parser',
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: const [
+              children: [
                 StatusPill('Ready', fg: ApsColors.success, bg: ApsColors.successBg),
                 SizedBox(height: 3),
                 Text(

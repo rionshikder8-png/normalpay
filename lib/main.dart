@@ -61,8 +61,11 @@ class _ApsReaderAppState extends State<ApsReaderApp> {
         });
       }
     }
-    if (session == SessionState.loggedIn && _app.pendingDeepLink.value != null) {
-      _scheduleDeepLink();
+    if (session == SessionState.loggedIn) {
+      if (_app.pendingDeepLink.value != null) _scheduleDeepLink();
+    } else if (session == SessionState.loggedOut && _app.pendingDeepLink.value != null) {
+      // Nothing can be opened while pairing is required.
+      _app.pendingDeepLink.value = null;
     }
   }
 

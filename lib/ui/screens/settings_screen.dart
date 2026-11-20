@@ -91,10 +91,10 @@ class SettingsScreen extends StatelessWidget {
         ]),
       ];
 
-  static List<InfoSection> get _aboutSections => [
+  static List<InfoSection> _aboutSections(String appVersion) => [
         InfoSection('APS Reader', [
           '${ApsConfig.appName} - ${ApsConfig.description}.',
-          'Version ${ApsConfig.appVersionFallback}',
+          'Version $appVersion',
         ]),
         InfoSection('Adverune Payment System', [
           ApsConfig.brandName,
@@ -295,7 +295,7 @@ class SettingsScreen extends StatelessWidget {
                       _NavRow(
                         icon: Icons.info_outline_rounded,
                         title: 'About APS Reader',
-                        onTap: () => _openInfo(context, 'About APS Reader', _aboutSections),
+                        onTap: () => _openInfo(context, 'About APS Reader', _aboutSections(appState.deviceInfo.appVersion)),
                       ),
                     ],
                   ),

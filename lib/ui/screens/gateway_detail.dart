@@ -99,12 +99,9 @@ class GatewayDetailScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       const Text('Known sender IDs', style: ApsText.label),
                       const SizedBox(height: 6),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: [
-                          _SenderChip(senderId),
-                        ],
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: _SenderChip(senderId),
                       ),
                       const SizedBox(height: 10),
                       const Text(

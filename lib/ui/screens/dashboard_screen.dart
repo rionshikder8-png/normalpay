@@ -18,41 +18,44 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = AppScope.of(context);
-    return ListenableBuilder(
-      listenable: appState,
-      builder: (context, _) => Scaffold(
-        backgroundColor: ApsColors.bg,
-        body: RefreshIndicator(
-          color: ApsColors.primary,
-          onRefresh: () => appState.refreshAll(),
-          child: ListView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-            children: [
-              _Header(reachable: appState.serverReachable),
-              const SectionHeader('Payment Overview'),
-              _OverviewGrid(overview: appState.overview),
-              if (appState.statsState == ApiState.notAvailable)
-                const Padding(
-                  padding: EdgeInsets.only(top: 8, left: 2, right: 2),
-                  child: Text(
-                    'Live totals need the APS server stats endpoint. Not available yet.',
-                    style: ApsText.caption,
+    return Scaffold(
+      backgroundColor: ApsColors.bg,
+      body: SafeArea(
+        bottom: false,
+        child: ListenableBuilder(
+          listenable: appState,
+          builder: (context, _) => RefreshIndicator(
+            color: ApsColors.primary,
+            onRefresh: () => appState.refreshAll(),
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+              children: [
+                _Header(reachable: appState.serverReachable),
+                const SectionHeader('Payment Overview'),
+                _OverviewGrid(overview: appState.overview),
+                if (appState.statsState == ApiState.notAvailable)
+                  const Padding(
+                    padding: EdgeInsets.only(top: 8, left: 2, right: 2),
+                    child: Text(
+                      'Live totals need the APS server stats endpoint. Not available yet.',
+                      style: ApsText.caption,
+                    ),
                   ),
+                const SectionHeader('Gateway Statistics'),
+                _GatewayStatsCard(appState: appState),
+                SectionHeader(
+                  'Recent Payments',
+                  action: 'See all',
+                  onAction: () {
+                    shellTab.value = transactionsTab;
+                  },
                 ),
-              const SectionHeader('Gateway Statistics'),
-              _GatewayStatsCard(appState: appState),
-              SectionHeader(
-                'Recent Payments',
-                action: 'See all',
-                onAction: () {
-                  shellTab.value = 1;
-                },
-              ),
-              _RecentPayments(appState: appState),
-              const SectionHeader('Device Health'),
-              _DeviceHealth(appState: appState),
-            ],
+                _RecentPayments(appState: appState),
+                const SectionHeader('Device Health'),
+                _DeviceHealth(appState: appState),
+              ],
+            ),
           ),
         ),
       ),
@@ -108,7 +111,7 @@ class _OverviewGrid extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 86,
+          height: 92,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -130,7 +133,7 @@ class _OverviewGrid extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         SizedBox(
-          height: 86,
+          height: 92,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -407,7 +410,7 @@ class _DeviceHealth extends StatelessWidget {
     final serverText = appState.serverReachable
         ? (serverLabel == null || serverLabel.isEmpty ? 'Connected' : 'Connected · $serverLabel')
         : 'Unreachable';
-    final readerText = running ? 'Running' : (appState.smsPermission ? 'Paused' : 'Needs permission');
+    final readerText = running ? 'Running' : 'Needs permission';
 
     final rows = <Widget>[
       _InfoRow(
@@ -429,7 +432,7 @@ class _DeviceHealth extends StatelessWidget {
       _InfoRow(label: 'Last SMS Received', value: relative(lastSms)),
       _InfoRow(
         label: 'Pending Uploads',
-        value: health.pending == 0 ? 'All uploaded' : '${health.pending} queued',
+        value: '${health.pending}',
         color: health.pending == 0 ? ApsColors.success : ApsColors.warn,
         trailing: health.pending == 0
             ? null

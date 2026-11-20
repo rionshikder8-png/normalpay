@@ -74,6 +74,12 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _app = AppScope.of(context);
+  }
+
+  @override
   void dispose() {
     _scroll.removeListener(_onScroll);
     _scroll.dispose();
@@ -174,7 +180,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
   void _openDetail(TxItem tx) {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => TransactionDetailScreen(tx)),
+      MaterialPageRoute<void>(builder: (_) => TransactionDetailScreen(tx: tx)),
     );
   }
 
@@ -182,7 +188,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   @override
   Widget build(BuildContext context) {
     final appState = AppScope.of(context);
-    _app = appState;
     return Scaffold(
       backgroundColor: ApsColors.bg,
       body: SafeArea(
@@ -366,6 +371,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
   Widget _historyBody(AppState appState) {
     if (appState.transactions.isEmpty) {
+      if (appState.txLoading) {
+        return const Center(child: CircularProgressIndicator());
+      }
       if (appState.txState == ApiState.notAvailable) {
         return _scrollable(
           const EmptyState(
@@ -402,9 +410,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
           ),
           appState,
         );
-      }
-      if (appState.txLoading) {
-        return const Center(child: CircularProgressIndicator());
       }
       return _scrollable(
         const EmptyState(
