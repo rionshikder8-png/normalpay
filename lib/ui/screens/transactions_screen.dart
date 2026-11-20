@@ -297,11 +297,11 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                           selected: _status == s,
                           onTap: () => setState(() => _status = _status == s ? null : s),
                         ),
-                      const Container(
+                      Container(
                         width: 1,
                         height: 18,
                         color: ApsColors.border,
-                        margin: EdgeInsets.only(right: 8),
+                        margin: const EdgeInsets.only(right: 8),
                       ),
                       for (final g in GatewayId.values)
                         _Chip(

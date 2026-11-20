@@ -72,9 +72,9 @@ ThemeData buildApsTheme() {
       ),
     ),
     switchTheme: SwitchThemeData(
-      thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? Colors.white : Colors.white),
+      thumbColor: const WidgetStatePropertyAll(Colors.white),
       trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? ApsColors.primary : const Color(0xFFD0D5DD)),
-      trackOutlineColor: WidgetStatePropertyAll(Colors.transparent),
+      trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
     ),
     dividerTheme: const DividerThemeData(color: ApsColors.border, thickness: 1, space: 1),
   );

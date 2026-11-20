@@ -367,7 +367,7 @@ class _RecentTile extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
-                  builder: (_) => TransactionDetailScreen(tx),
+                  builder: (_) => TransactionDetailScreen(tx: tx),
                 ),
               );
             },
