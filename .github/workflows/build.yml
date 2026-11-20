@@ -55,12 +55,6 @@ jobs:
         run: |
           if [ -d test ]; then flutter test; else echo "No tests yet"; fi
 
-      - name: Native Kotlin unit tests (SMS parser)
-        run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew :app:testDebugUnitTest --tests "store.adverune.aps.SmsParserTest" --no-daemon
-
       - name: Prepare signing key (CI debug-grade key unless secrets provided)
         env:
           KEYSTORE_B64: ${{ secrets.APS_KEYSTORE_BASE64 }}
@@ -97,6 +91,12 @@ jobs:
           if grep -q "BUILD FAILED\|FAILURE: Build failed\|e: file://" build.log; then
             echo "::error::Gradle compilation failed"; exit 1
           fi
+
+      - name: Native Kotlin unit tests (SMS parser)
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew :app:testDebugUnitTest --tests "store.adverune.aps.SmsParserTest" --no-daemon
 
       - name: Collect APK
         run: |
