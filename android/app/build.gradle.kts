@@ -29,7 +29,7 @@ android {
     
     defaultConfig {
         applicationId = "store.adverune.aps"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 35
         versionCode = 2
         versionName = "2.0.0"
